@@ -1,0 +1,11 @@
+#!/bin/bash
+cd /workspace/pyconth2018/
+    git fetch origin master
+    git reset --hard
+    git branch -m temp_master
+    git checkout master
+    git branch -D temp_master
+    pip install -r worker/dependencies.txt
+    cd worker
+    python -u worker.py
+
