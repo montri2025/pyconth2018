@@ -1,2 +1,0 @@
-MQTT_SERVER = "localhost"
-SUBSCRIBE = "pyconth/2018/piggy/bank/1"

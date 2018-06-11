@@ -1,13 +1,17 @@
 from umqtt.simple import MQTTClient
+#from umqtt.robust import MQTTClient
 import ubinascii
 import machine
-
-
-SERVER = "deenaja.com"
+import ujson
+from config import  MQTT_SERVER,PUBLISH_TOPIC
 CLIENT_ID = ubinascii.hexlify(machine.unique_id())
-TOPIC = b"coin"
-conn = MQTTClient(CLIENT_ID, SERVER)
-conn.connect()
-def pub(conn=conn, topic=TOPIC, message="1"):
-    print("Connected to %s, waiting for button presses" % SERVER)
+
+default_message = ujson.dumps({"deposite":1})
+
+def connected():
+   conn = MQTTClient(CLIENT_ID, MQTT_SERVER)
+   conn.connect()
+   return conn
+def push_coins(conn=connected, topic=PUBLISH_TOPIC, message=default_message):  
+    print("push_message::::"+message)
     conn.publish(topic, message.encode())
