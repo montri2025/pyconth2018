@@ -43,6 +43,8 @@ def on_message(client, userdata, msg):
             statsd.gauge('balance',current_balance)
             print("withdraw::", amount_withdraw)
             print("balance::",current_balance)
+        elif msg_json.get('online'):
+             statsd.gauge('online',msg_json.get('online'))  
         else:
             current_balance = balance(PIGGY_ID)
             statsd.gauge('balance',current_balance)

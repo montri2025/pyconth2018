@@ -16,6 +16,8 @@ pin_coin.irq(trigger=machine.Pin.IRQ_FALLING | machine.Pin.IRQ_RISING, handler=c
 
 current  =  0 
 conn = mqtt_pub.connected()
+online_message = ujson.dumps({"online":2})
+mqtt_pub.push_coins(conn,PUBLISH_TOPIC,online_message)
 while True:
     try:
         if current< coin.pulse_total:
