@@ -4,6 +4,7 @@ import coin
 import mqtt_pub
 import time
 import ujson
+import math
 from config import  MQTT_SERVER,PUBLISH_TOPIC
 
 ENV_NAME = "devlopment"
@@ -16,10 +17,17 @@ pin_coin.irq(trigger=machine.Pin.IRQ_FALLING | machine.Pin.IRQ_RISING, handler=c
 
 current  =  0 
 conn = mqtt_pub.connected()
-online_message = ujson.dumps({"online":2})
+online_message = ujson.dumps({"status":2})
 mqtt_pub.push_coins(conn,PUBLISH_TOPIC,online_message)
+i = 0
 while True:
     try:
+        i = i + 1
+        if math.fmod(i,50000)==0:
+            online_message = ujson.dumps({"status":2})
+            mqtt_pub.push_coins(conn,PUBLISH_TOPIC,online_message)
+            i = 0
+
         if current< coin.pulse_total:
             deposit_message = ujson.dumps({"deposit":coin.pulse_total})
             mqtt_pub.push_coins(conn,PUBLISH_TOPIC,deposit_message)
@@ -28,6 +36,7 @@ while True:
             current = 0
             balance_message = ujson.dumps({"balance":coin.pulse_total})
             mqtt_pub.push_coins(conn,PUBLISH_TOPIC,balance_message)
+            i = 0
     except:
         conn.disconnect()
         time.sleep(10)

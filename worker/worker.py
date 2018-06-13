@@ -6,9 +6,13 @@ from transaction import deposit, balance, withdraw
 import json 
 import uuid
 import hashlib
+import time
 
 worker_name = "mac-book"
 MQTT_CLIENT_ID ="pigg_bank_"+str(uuid.uuid1())
+
+LAST_MESSAGE_TIME = time.time()
+MACHINE_STATUS = 'online'
 
 # The callback for when the client receives a CONNACK response from the server.
 @statsd.timer(worker_name + '.on-connect')
@@ -22,6 +26,8 @@ def on_connect(client, userdata, flags, rc):
 @statsd.timer(worker_name + '.on-message')
 def on_message(client, userdata, msg):
     try:
+        LAST_MESSAGE_TIME = time.time()
+        MACHINE_STATUS = 'online'
         print(msg.topic+" "+str(msg.payload))
         msg_json = json.loads(msg.payload)
         if isinstance(msg_json,dict):
@@ -62,4 +68,15 @@ client.connect(MQTT_SERVER, 1883, 120)
 # handles reconnecting.
 # Other loop*() functions are available that give a threaded interface and a
 # manual interface.
-client.loop_forever()
+client.loop_start()
+while True:
+    #client.loop()
+    TIME_FREE = time.time()
+    elapsed = TIME_FREE - LAST_MESSAGE_TIME
+    if elapsed > 60 and MACHINE_STATUS=='online':
+        offline_message = json.dumps({"status":1})
+        client.publish(SUBSCRIBE, offline_message)
+        MACHINE_STATUS='offline'
+        
+    
+#client.loop_forever()
