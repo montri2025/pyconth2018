@@ -2,7 +2,7 @@ import paho.mqtt.client as mqtt
 import time
 from config import MQTT_SERVER, SUBSCRIBE, PIGGY_ID
 from sender import statsd
-from transaction import deposite, balance, withdraw
+from transaction import deposit, balance, withdraw
 import json 
 import uuid
 import hashlib
@@ -19,23 +19,22 @@ def on_connect(client, userdata, flags, rc):
     client.subscribe(SUBSCRIBE)
 
 # The callback for when a PUBLISH message is received from the server.
-#@statsd.timer(worker_name + '.on-message')
+@statsd.timer(worker_name + '.on-message')
 def on_message(client, userdata, msg):
     try:
         print(msg.topic+" "+str(msg.payload))
         msg_json = json.loads(msg.payload)
         if isinstance(msg_json,dict):
-            # d = deposite
-            if msg_json.get('deposite'):
-                amount_deposite = msg_json.get('deposite',0)
-                deposite(PIGGY_ID,amount_deposite,'desc deposite')
-                statsd.incr('deposite',amount_deposite)
-                statsd.gauge('deposite',amount_deposite)
+            # d = deposit
+            if msg_json.get('deposit'):
+                amount_deposit = msg_json.get('deposit',0)
+                deposit(PIGGY_ID,amount_deposit,'desc deposit')
+                statsd.incr('deposit',amount_deposit)
+                statsd.gauge('deposit',amount_deposit)
                 current_balance = balance(PIGGY_ID)
                 statsd.gauge('balance',current_balance)
-                print("deposite::", amount_deposite)
+                print("deposit::", amount_deposit)
                 print("balance::",current_balance)
-
             elif msg_json.get('withdraw'):
                 amount_withdraw = withdraw(PIGGY_ID,'desc withdraw')
                 statsd.gauge('withdraw',amount_withdraw)
@@ -44,9 +43,9 @@ def on_message(client, userdata, msg):
                 statsd.gauge('balance',current_balance)
                 print("withdraw::", amount_withdraw)
                 print("balance::",current_balance)
-            elif msg_json.get('online'):
-                statsd.gauge('online',msg_json.get('online'))  
-            else:
+            elif msg_json.get('status'):
+                statsd.gauge('status',msg_json.get('status'))  
+            elif msg_json.get('balance'):
                 current_balance = balance(PIGGY_ID)
                 statsd.gauge('balance',current_balance)
                 statsd.incr('balance',current_balance)

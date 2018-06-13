@@ -5,10 +5,10 @@ conn = sqlite3.connect('piggy_bank.db')
 
 c = conn.cursor()
 
-def deposite(piggy_id, amount, desc='deposite'):
+def deposit(piggy_id, amount, desc='deposit'):
     try:
         create_at = datetime.datetime.now().strftime("%Y%m%d%H%M")
-        sql = "INSERT INTO transactions (piggy_bank_id, desc, tran_type, amount, created_at) VALUES ("+str(piggy_id)+",'"+desc+"','deposite',"+str(amount)+",'"+create_at+"')"
+        sql = "INSERT INTO transactions (piggy_bank_id, desc, tran_type, amount, created_at) VALUES ("+str(piggy_id)+",'"+desc+"','deposit',"+str(amount)+",'"+create_at+"')"
         print(sql)
         c.execute(sql)
         conn.commit()

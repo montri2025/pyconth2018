@@ -21,8 +21,8 @@ mqtt_pub.push_coins(conn,PUBLISH_TOPIC,online_message)
 while True:
     try:
         if current< coin.pulse_total:
-            deposite_message = ujson.dumps({"deposite":coin.pulse_total})
-            mqtt_pub.push_coins(conn,PUBLISH_TOPIC,deposite_message)
+            deposit_message = ujson.dumps({"deposit":coin.pulse_total})
+            mqtt_pub.push_coins(conn,PUBLISH_TOPIC,deposit_message)
             current = coin.pulse_total
             coin.pulse_total = 0
             current = 0

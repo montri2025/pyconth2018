@@ -1,12 +1,11 @@
 from umqtt.simple import MQTTClient
-#from umqtt.robust import MQTTClient
 import ubinascii
 import machine
 import ujson
 from config import  MQTT_SERVER,PUBLISH_TOPIC
 CLIENT_ID = ubinascii.hexlify(machine.unique_id())
 
-default_message = ujson.dumps({"deposite":1})
+default_message = ujson.dumps({"deposit":1})
 
 def connected():
    conn = MQTTClient(CLIENT_ID, MQTT_SERVER)
