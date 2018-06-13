@@ -1,4 +1,4 @@
-FROM ubuntu:17.10
+FROM ubuntu:14.04
 MAINTAINER "Montri" <montri2025@gmail.com>
 
 # environment
