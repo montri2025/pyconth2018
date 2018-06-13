@@ -68,7 +68,7 @@ client.connect(MQTT_SERVER, 1883, 120)
 # handles reconnecting.
 # Other loop*() functions are available that give a threaded interface and a
 # manual interface.
-client.loop_start()
+client.loop_forever()
 while True:
     #client.loop()
     TIME_FREE = time.time()

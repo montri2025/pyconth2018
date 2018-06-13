@@ -7,6 +7,7 @@ conn = sqlite3.connect('piggy_bank.db')
 
 
 def deposit(conn, piggy_id, amount, desc='deposit'):
+    conn = sqlite3.connect('piggy_bank.db')
     c = conn.cursor()
     try:
         create_at = datetime.datetime.now().strftime("%Y%m%d%H%M")
@@ -19,7 +20,8 @@ def deposit(conn, piggy_id, amount, desc='deposit'):
         pass 
 
 
-def withdraw(conn, piggy_id,desc='withdraw'):
+def withdraw(piggy_id,desc='withdraw'):
+    conn = sqlite3.connect('piggy_bank.db')
     c = conn.cursor()
     try:
         amount = balance(piggy_id)
@@ -34,7 +36,8 @@ def withdraw(conn, piggy_id,desc='withdraw'):
         pass 
     
 
-def balance(conn, piggy_id):
+def balance(piggy_id):
+    conn = sqlite3.connect('piggy_bank.db')
     c = conn.cursor()
     try:
         sql = "select sum(amount) from transactions where piggy_bank_id="+str(piggy_id)
