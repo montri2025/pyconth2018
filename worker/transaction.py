@@ -1,12 +1,7 @@
 import sqlite3
 import datetime
 
-
-
-conn = sqlite3.connect('piggy_bank.db')
-
-
-def deposit(conn, piggy_id, amount, desc='deposit'):
+def deposit(piggy_id, amount, desc='deposit'):
     conn = sqlite3.connect('piggy_bank.db')
     c = conn.cursor()
     try:

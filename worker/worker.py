@@ -2,7 +2,7 @@ import paho.mqtt.client as mqtt
 import time
 from config import MQTT_SERVER, SUBSCRIBE, PIGGY_ID
 from sender import statsd
-from transaction import conn, deposit, balance, withdraw
+from transaction import  deposit, balance, withdraw
 import json 
 import uuid
 import hashlib
@@ -34,25 +34,25 @@ def on_message(client, userdata, msg):
             # d = deposit
             if msg_json.get('deposit'):
                 amount_deposit = msg_json.get('deposit',0)
-                deposit(conn,PIGGY_ID,amount_deposit,'desc deposit')
+                deposit(PIGGY_ID,amount_deposit,'desc deposit')
                 statsd.incr('deposit',amount_deposit)
                 statsd.gauge('deposit',amount_deposit)
-                current_balance = balance(conn,PIGGY_ID)
+                current_balance = balance(PIGGY_ID)
                 statsd.gauge('balance',current_balance)
                 print("deposit::", amount_deposit)
                 print("balance::",current_balance)
             elif msg_json.get('withdraw'):
-                amount_withdraw = withdraw(conn, PIGGY_ID,'desc withdraw')
+                amount_withdraw = withdraw(PIGGY_ID,'desc withdraw')
                 statsd.gauge('withdraw',amount_withdraw)
                 statsd.incr('withdraw',amount_withdraw)
-                current_balance = balance(conn,PIGGY_ID)
+                current_balance = balance(PIGGY_ID)
                 statsd.gauge('balance',current_balance)
                 print("withdraw::", amount_withdraw)
                 print("balance::",current_balance)
             elif msg_json.get('status'):
                 statsd.gauge('status',msg_json.get('status'))  
             elif msg_json.get('balance'):
-                current_balance = balance(conn,PIGGY_ID)
+                current_balance = balance(PIGGY_ID)
                 statsd.gauge('balance',current_balance)
                 statsd.incr('balance',current_balance)
                 print("balance::",current_balance)
