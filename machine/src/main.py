@@ -34,8 +34,6 @@ while True:
             current = coin.pulse_total
             coin.pulse_total = 0
             current = 0
-            balance_message = ujson.dumps({"balance":coin.pulse_total})
-            mqtt_pub.push_coins(conn,PUBLISH_TOPIC,balance_message)
             i = 0
     except:
         conn.disconnect()
