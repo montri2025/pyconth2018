@@ -78,5 +78,4 @@ while True:
         client.publish(SUBSCRIBE, offline_message)
         MACHINE_STATUS='offline'
         
-    
 #client.loop_forever()
