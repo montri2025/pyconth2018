@@ -76,5 +76,5 @@ while True:
     if elapsed > 60 and MACHINE_STATUS=='online':
         offline_message = json.dumps({"status":1})
         client.publish(SUBSCRIBE, offline_message)
-        MACHINE_STATUS='offline
+        MACHINE_STATUS='offline'
 #client.loop_forever()
