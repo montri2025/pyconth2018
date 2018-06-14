@@ -27,7 +27,7 @@ def on_message(client, userdata, msg):
     global LAST_MESSAGE_TIME,  MACHINE_STATUS
     try:
         LAST_MESSAGE_TIME = time.time()
-        MACHINE_STATUS = 'online'
+        
         print(msg.topic+" "+str(msg.payload))
         msg_json = json.loads(msg.payload)
         if isinstance(msg_json,dict):
@@ -50,6 +50,9 @@ def on_message(client, userdata, msg):
                 print("withdraw::", amount_withdraw)
                 print("balance::",current_balance)
             elif msg_json.get('status'):
+                status = msg_json.get('status')
+                if status==2: 
+                    MACHINE_STATUS = 'online'
                 statsd.gauge('status',msg_json.get('status'))  
             elif msg_json.get('balance'):
                 current_balance = balance(PIGGY_ID)
