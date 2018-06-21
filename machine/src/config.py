@@ -1,8 +1,7 @@
 PIGGY_ID = 1
-MQTT_SERVER = "deenaja.com"
+MQTT_SERVER = "localhost"
 PUBLISH_TOPIC = b"pyconth/2018/piggy/bank/"+ str(PIGGY_ID)
 
-ESSID="Montri.S’s iPhone"
-ESSID_PASSWORD ="qazxswedc"
-#ESSID="www.deenaja.com"
-#ESSID_PASSWORD ="4910421038"
+ESSID="xx"
+ESSID_PASSWORD ="xx"
+
